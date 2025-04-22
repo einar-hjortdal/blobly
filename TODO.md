@@ -1,0 +1,4 @@
+- Do not delete files
+- Create directories
+  - year/month
+- Do not use dotenv, expose config instead
