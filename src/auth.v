@@ -1,4 +1,4 @@
-module blobly
+module main
 
 // import net.http
 

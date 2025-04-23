@@ -1,8 +1,8 @@
-module blobly
+module main
 
 import compress.gzip
 import os
-import x.vweb
+import veb
 
 // handle_create_files creates a files with the provided file_name.
 // If the file already exists, the file will be overwritten.
@@ -10,7 +10,7 @@ import x.vweb
 // The body of the request should contain the file.
 // Query `gzip`: when present or 'true', the file will be compressed.
 // Requires authorization. (TODO)
-fn handle_create_file(app &App, mut ctx Context, file_name string) vweb.Result {
+fn handle_create_file(app &App, mut ctx Context, file_name string) veb.Result {
 	fn_name := 'handle_create_file'
 
 	should_gzip := 'gzip' in ctx.query || ctx.query['gzip'] == 'true'

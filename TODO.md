@@ -1,4 +1,5 @@
-- Do not delete files
+# TODO
+
 - Create directories
   - year/month
-- Do not use dotenv, expose config instead
+- Logging

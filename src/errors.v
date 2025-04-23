@@ -1,15 +1,20 @@
-module blobly
+module main
 
-import x.vweb
+import veb
 import json
 import time
 import net.http
 
+fn format_error_message(msg string) string {
+	return '[${lib}: ${msg}]'
+}
+
 struct BloblyError {
+	Error
 	status    http.Status
 	code      int
 	msg       string
-	timestamp string
+	timestamp time.Time
 }
 
 fn (e BloblyError) status() http.Status {
@@ -24,10 +29,11 @@ fn (e BloblyError) msg() string {
 	return e.msg
 }
 
-fn (e BloblyError) timestamp() string {
+fn (e BloblyError) timestamp() time.Time {
 	return e.timestamp
 }
 
+// TODO should encode timestamp to iso8601
 fn (e BloblyError) to_string() string {
 	return json.encode(e)
 }
@@ -37,11 +43,11 @@ fn new_blobly_error(status http.Status, msg string) BloblyError {
 		status:    status
 		code:      int(status)
 		msg:       msg
-		timestamp: time.now().format_rfc3339()
+		timestamp: time.now()
 	}
 }
 
-fn (mut ctx Context) send_error(error IError, function_name string) vweb.Result {
+fn (mut ctx Context) send_error(error IError, function_name string) veb.Result {
 	if error is BloblyError {
 		// app.logger.debug('${function_name}: ${error}')
 		ctx.res.set_status(error.status)

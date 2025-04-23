@@ -1,17 +1,17 @@
-module blobly
+module main
 
-import x.vweb
+import veb
 import net.http
 import os
 
-fn send_file(mut ctx Context, file_path string) vweb.Result {
+fn send_file(mut ctx Context, file_path string) veb.Result {
 	if os.is_file(file_path) {
 		return ctx.file(file_path)
 	}
 	return ctx.not_found()
 }
 
-fn send_compressed_file(mut ctx Context, file_extension string, file_path string) vweb.Result {
+fn send_compressed_file(mut ctx Context, file_extension string, file_path string) veb.Result {
 	content_type := get_content_type(file_extension)
 	ctx.set_header(http.CommonHeader.content_encoding, 'gzip')
 	ctx.set_header(http.CommonHeader.vary, 'Accept-Encoding')
@@ -20,7 +20,7 @@ fn send_compressed_file(mut ctx Context, file_extension string, file_path string
 }
 
 // handle_get_file serves the requested file, only in development.
-fn handle_serve_public(app &App, mut ctx Context, file_name string) vweb.Result {
+fn handle_serve_public(app &App, mut ctx Context, file_name string) veb.Result {
 	fn_name := 'handle_serve_public'
 
 	if app.mode == 'production' {

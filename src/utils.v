@@ -1,8 +1,10 @@
-module blobly
+module main
 
-import x.vweb
+import veb
 import net.http
 import os
+
+const lib = 'blobly'
 
 fn string_default_if_empty(possibly_empty string, default_string string) string {
 	if possibly_empty == '' {
@@ -31,13 +33,13 @@ fn could_gzip(file_name string) bool {
 }
 
 fn get_content_type(extension string) string {
-	return vweb.mime_types[extension]
+	return veb.mime_types[extension]
 }
 
 fn safely_join_path(public_directory string, provided_path string) !string {
 	file_path := os.join_path(public_directory, provided_path)
 	if !file_path.starts_with(public_directory) {
-		return new_bloblys_error(http.Status.bad_request, 'Invalid path')
+		return new_blobly_error(http.Status.bad_request, 'Invalid path')
 	}
 	return file_path
 }
