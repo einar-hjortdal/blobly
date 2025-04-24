@@ -43,16 +43,10 @@ fn create_public_directory(dir_path string) {
 	}
 }
 
-fn setup(app App) {
-	create_public_directory(app.public_directory)
-}
-
 fn main() {
 	dotenv.load()
-
 	mut app := create_app_instance() or { panic(err) }
-	setup(app)
-
+	create_public_directory(app.public_directory)
 	env_run_at_port := strconv.atoi(os.getenv('PORT')) or { 8080 }
 	veb.run[App, Context](mut app, env_run_at_port)
 }
