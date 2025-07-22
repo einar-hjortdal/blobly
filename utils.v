@@ -6,13 +6,6 @@ import os
 
 const lib = 'blobly'
 
-fn string_default_if_empty(possibly_empty string, default_string string) string {
-	if possibly_empty == '' {
-		return default_string
-	}
-	return possibly_empty
-}
-
 // get_gzippable_file_extension returns the extension of the file that could be gzipped, if it could.
 fn get_gzippable_file_extension(file_name string) !string {
 	for extension in plausible_gzip {

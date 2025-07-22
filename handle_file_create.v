@@ -10,7 +10,7 @@ import veb
 // The body of the request should contain the file.
 // Query `gzip`: when present or 'true', the file will be compressed.
 // Requires authorization. (TODO)
-fn handle_create_file(app &App, mut ctx Context, file_name string) veb.Result {
+fn handle_create_file(mut app App, mut ctx Context, file_name string) veb.Result {
 	fn_name := 'handle_create_file'
 
 	should_gzip := 'gzip' in ctx.query || ctx.query['gzip'] == 'true'

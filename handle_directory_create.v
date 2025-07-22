@@ -4,7 +4,7 @@ import veb
 import os
 
 // handle_create_directory creates a new directory with the provided directory_name.
-fn handle_create_directory(app &App, mut ctx Context, directory_name string) veb.Result {
+fn handle_create_directory(mut app App, mut ctx Context, directory_name string) veb.Result {
 	fn_name := 'handle_create_directory'
 
 	directory_path := safely_join_path(app.public_directory, directory_name) or {

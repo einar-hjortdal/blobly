@@ -1,0 +1,1 @@
+FROM openmamba/openmamba:latest

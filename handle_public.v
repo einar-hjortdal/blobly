@@ -20,12 +20,8 @@ fn send_compressed_file(mut ctx Context, file_extension string, file_path string
 }
 
 // handle_get_file serves the requested file, only in development.
-fn handle_serve_public(app &App, mut ctx Context, file_name string) veb.Result {
+fn handle_serve_public(mut app App, mut ctx Context, file_name string) veb.Result {
 	fn_name := 'handle_serve_public'
-
-	if app.mode == 'production' {
-		return ctx.request_error("You're running blobly in production mode. Your files should be served by your web server (eg. FreeNGINX)")
-	}
 
 	file_path := safely_join_path(app.public_directory, file_name) or {
 		return ctx.send_error(err, fn_name)
