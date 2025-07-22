@@ -7,7 +7,9 @@ struct Context {
 	veb.Context
 }
 
+@[heap]
 pub struct App {
+	veb.Middleware[Context]
 	public_directory string
 	private_keys     []string
 	secret_keys      []string
@@ -27,6 +29,8 @@ fn main() {
 		private_keys:     private_keys
 		secret_keys:      secret_keys
 	}
+
+	app.use(handler: app.middleware_debug)
 
 	create_public_directory(app.public_directory)
 	veb.run[App, Context](mut app, port)

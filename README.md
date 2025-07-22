@@ -6,7 +6,12 @@ Central file server
 
 - Accepts BLOBs
 - Stores BLOBs on file system
-- Serves BLOBS (during development)
+- Serves BLOBS
 - Compresses BLOBs with gzip*
 
 *toggle
+
+## Usage
+
+TODO
+
