@@ -7,10 +7,9 @@ import einar_hjortdal.dotenv
 const env_public_directory = 'PUBLIC_DIRECTORY'
 const env_port = 'PORT'
 const env_debug = 'DEBUG'
-const env_private_keys = 'PRIVATE_KEYS'
-const env_secret_keys = 'SECRET_KEYS'
+const env_keys = 'KEYS'
 
-const env_required = [env_secret_keys, env_debug]
+const env_required = [env_keys, env_debug]
 const env_defaults = {
 	env_debug:            'false'
 	env_port:             '8080'
@@ -27,7 +26,16 @@ fn add_default_settings() {
 fn verify_settings() {
 	for i := 0; i < env_required.len; i++ {
 		env_var := env_required[i]
+
 		if os.getenv(env_var) == '' {
+			if env_var == env_keys {
+				access_key, secret_key := generate_key_pair()
+				log.error('Missing environment variable ${env_var}
+					If you need new keys, use these:
+					Secret key: ${secret_key}
+					Access key: ${access_key}
+					exiting...')
+			}
 			panic(format_error_message('Missing environment variable ${env_var}'))
 		}
 	}
@@ -54,6 +62,21 @@ fn set_log_level() {
 	} else {
 		log.set_level(log.Level.info)
 	}
+}
+
+fn get_keys() map[string]string {
+	key_pairs := os.getenv(env_keys).split(',')
+	mut keys := map[string]string{}
+	for i := 0; i < key_pairs.len; i++ {
+		pair := key_pairs[i].split('=')
+		if pair.len != 2 {
+			panic('Malformed environemnt variable ${env_keys}')
+		}
+		access_key := pair[0]
+		secret_key := pair[1]
+		keys[access_key] = secret_key
+	}
+	return keys
 }
 
 fn load_settings() {

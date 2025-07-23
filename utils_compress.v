@@ -4,8 +4,6 @@ import veb
 import net.http
 import os
 
-const lib = 'blobly'
-
 // get_gzippable_file_extension returns the extension of the file that could be gzipped, if it could.
 fn get_gzippable_file_extension(file_name string) !string {
 	for extension in plausible_gzip {

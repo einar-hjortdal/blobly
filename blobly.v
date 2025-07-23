@@ -11,8 +11,7 @@ struct Context {
 pub struct App {
 	veb.Middleware[Context]
 	public_directory string
-	private_keys     []string
-	secret_keys      []string
+	keys             map[string]string
 }
 
 fn main() {
@@ -21,16 +20,15 @@ fn main() {
 	public_directory := os.getenv(env_public_directory)
 	public_directory_abs_path := os.abs_path(public_directory)
 	port := os.getenv(env_port).int()
-	private_keys := os.getenv(env_private_keys).split(',')
-	secret_keys := os.getenv(env_secret_keys).split(',')
+	keys := get_keys()
 
 	mut app := App{
 		public_directory: public_directory_abs_path
-		private_keys:     private_keys
-		secret_keys:      secret_keys
+		keys:             keys
 	}
 
 	app.use(handler: app.middleware_debug)
+	app.route_use('/api/:path...', handler: app.middleware_auth)
 
 	create_public_directory(app.public_directory)
 	veb.run[App, Context](mut app, port)

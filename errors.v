@@ -5,6 +5,8 @@ import json
 import time
 import net.http
 
+const lib = 'blobly'
+
 fn format_error_message(msg string) string {
 	return '[${lib}: ${msg}]'
 }
