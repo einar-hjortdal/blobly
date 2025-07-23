@@ -36,7 +36,7 @@ fn verify_settings() {
 					Access key: ${access_key}
 					exiting...')
 			}
-			panic(format_error_message('Missing environment variable ${env_var}'))
+			panic('Missing environment variable ${env_var}')
 		}
 	}
 }

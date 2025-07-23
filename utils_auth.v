@@ -6,7 +6,7 @@ import crypto.sha256
 import encoding.base64
 import encoding.hex
 
-// returns a secret key and access key pair
+// returns (access_key, secret_key)
 fn generate_key_pair() (string, string) {
 	access_key_bytes := rand.bytes(64) or { panic(err) }
 	secret_key_bytes := rand.bytes(64) or { panic(err) }

@@ -22,6 +22,8 @@ fn main() {
 	port := os.getenv(env_port).int()
 	keys := get_keys()
 
+	create_public_directory(public_directory_abs_path)
+
 	mut app := App{
 		public_directory: public_directory_abs_path
 		keys:             keys
@@ -30,6 +32,5 @@ fn main() {
 	app.use(handler: app.middleware_debug)
 	app.route_use('/api/:path...', handler: app.middleware_auth)
 
-	create_public_directory(app.public_directory)
 	veb.run[App, Context](mut app, port)
 }

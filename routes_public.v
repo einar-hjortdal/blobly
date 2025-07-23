@@ -1,8 +1,31 @@
 module main
 
+import net.http
+import os
 import veb
 
 @['/public/:file_name'; get]
 fn (mut app App) serve_public(mut ctx Context, file_name string) veb.Result {
-	return handle_serve_public(mut app, mut ctx, file_name)
+	file_path := safely_join_path(app.public_directory, file_name) or {
+		return handle_error(mut ctx, http.Status.internal_server_error, 'Bad path name',
+			err.msg())
+	}
+
+	accepted_encoding := ctx.get_header(http.CommonHeader.accept_encoding) or {
+		return send_file(mut ctx, file_path)
+	}
+
+	if !accepted_encoding.contains('gzip') {
+		return send_file(mut ctx, file_path)
+	}
+
+	file_extension := get_gzippable_file_extension(file_name) or {
+		return send_file(mut ctx, file_path)
+	}
+
+	compressed_file_path := '${file_path}${gzip_extension}'
+	if os.is_file(compressed_file_path) {
+		return send_compressed_file(mut ctx, file_extension, compressed_file_path)
+	}
+	return send_file(mut ctx, file_path)
 }
