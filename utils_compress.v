@@ -26,11 +26,10 @@ fn get_content_type(extension string) string {
 	return veb.mime_types[extension]
 }
 
-// TODO is this necessary?
 fn safely_join_path(public_directory string, provided_path string) !string {
 	file_path := os.join_path(public_directory, provided_path)
 	if !file_path.starts_with(public_directory) {
-		return 'Invalid path'
+		return 'Path resolved to a higher directory outside of the public directory'
 	}
 	return file_path
 }
