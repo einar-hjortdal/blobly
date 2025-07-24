@@ -4,21 +4,44 @@ import log
 import os
 import einar_hjortdal.dotenv
 
+const lib = 'blobly'
+const env_prefix = lib.to_upper() + '_'
+
 const env_public_directory = 'PUBLIC_DIRECTORY'
 const env_port = 'PORT'
 const env_debug = 'DEBUG'
 const env_keys = 'KEYS'
 
 const env_required = [env_keys, env_debug]
+
 const env_defaults = {
 	env_debug:            'false'
 	env_port:             '8080'
 	env_public_directory: 'public'
 }
 
+const env_expected = [
+	env_public_directory,
+	env_port,
+	env_debug,
+	env_keys,
+]
+
+fn remove_prefix() {
+	for i := 0; i < env_expected.len; i++ {
+		env_var := env_expected[i]
+		val := os.getenv(env_prefix + env_var)
+		if val == '' {
+			continue
+		}
+
+		os.unsetenv(env_prefix + env_var)
+		os.setenv(env_var, val, false)
+	}
+}
+
 fn add_default_settings() {
 	for k, v in env_defaults {
-		os.setenv(k, v, false)
 		os.setenv(k, v, false)
 	}
 }
@@ -79,8 +102,21 @@ fn get_keys() map[string]string {
 	return keys
 }
 
-fn load_settings() {
+struct Settings {
+	keys             map[string]string
+	port             int
+	public_directory string
+}
+
+fn load_settings() Settings {
 	dotenv.load()
+	remove_prefix()
 	add_default_settings()
 	verify_settings()
+
+	return Settings{
+		keys:             get_keys()
+		port:             os.getenv(env_port).int()
+		public_directory: os.abs_path(os.getenv(env_public_directory))
+	}
 }

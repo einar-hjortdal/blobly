@@ -1,6 +1,5 @@
 module main
 
-import os
 import veb
 
 struct Context {
@@ -10,27 +9,22 @@ struct Context {
 @[heap]
 pub struct App {
 	veb.Middleware[Context]
-	public_directory string
 	keys             map[string]string
+	public_directory string
 }
 
 fn main() {
-	load_settings()
+	settings := load_settings()
 
-	public_directory := os.getenv(env_public_directory)
-	public_directory_abs_path := os.abs_path(public_directory)
-	port := os.getenv(env_port).int()
-	keys := get_keys()
-
-	create_public_directory(public_directory_abs_path)
+	create_public_directory(settings.public_directory)
 
 	mut app := App{
-		public_directory: public_directory_abs_path
-		keys:             keys
+		public_directory: settings.public_directory
+		keys:             settings.keys
 	}
 
 	app.use(handler: app.middleware_debug)
 	app.route_use('/api/:path...', handler: app.middleware_auth)
 
-	veb.run[App, Context](mut app, port)
+	veb.run[App, Context](mut app, settings.port)
 }

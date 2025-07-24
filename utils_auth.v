@@ -19,9 +19,9 @@ fn new_signature(access_key string, secret_key string) []u8 {
 	return hmac.new(secret_key.bytes(), access_key.bytes(), sha256.sum, sha256.block_size)
 }
 
-fn new_header_content(message string, secret_key string) string {
-	signature := new_signature(message, secret_key)
-	return '${message}$${signature.bytestr()}'
+fn new_header_content(access_key string, secret_key string) string {
+	signature := new_signature(access_key, secret_key)
+	return '${access_key}$${signature.bytestr()}'
 }
 
 fn validate_header_content(header_content string, keys map[string]string) !string {
