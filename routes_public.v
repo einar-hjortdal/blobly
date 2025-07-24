@@ -19,13 +19,12 @@ fn (mut app App) serve_public(mut ctx Context, file_name string) veb.Result {
 		return send_file(mut ctx, file_path)
 	}
 
-	file_extension := get_gzippable_file_extension(file_name) or {
-		return send_file(mut ctx, file_path)
-	}
-
-	compressed_file_path := '${file_path}${gzip_extension}'
-	if os.is_file(compressed_file_path) {
-		return send_compressed_file(mut ctx, file_extension, compressed_file_path)
+	if can_gzip(file_name) {
+		compressed_file_path := '${file_path}${gzip_extension}'
+		file_extension := os.file_ext(file_path).to_lower()
+		if os.is_file(compressed_file_path) {
+			return send_compressed_file(mut ctx, file_extension, compressed_file_path)
+		}
 	}
 	return send_file(mut ctx, file_path)
 }

@@ -20,3 +20,13 @@ fn handle_error(mut ctx Context, status http.Status, message string, details str
 	ctx.res.set_status(status)
 	return ctx.json(new_blobly_error(message, details))
 }
+
+struct BloblySuccess {
+	success              bool
+	file_name            string @[json: 'fileName'; omitempty]
+	file_name_compressed string @[omitempty]
+}
+
+struct Entries {
+	entries []string
+}

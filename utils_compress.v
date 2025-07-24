@@ -3,21 +3,15 @@ module main
 import veb
 import os
 
-// get_gzippable_file_extension returns the extension of the file that could be gzipped, if it could.
-fn get_gzippable_file_extension(file_name string) !string {
-	for extension in plausible_gzip {
-		if file_name.ends_with(extension) {
-			return extension
-		}
-	}
-	return error('This file should not be compressed')
-}
+const plausible_gzip = ['.html', '.css', '.js', '.json', '.xml', '.md', '.txt']
+const gzip_extension = '.gz'
 
-// could_gzip wraps get_gzippable_file_extension and returns a boolean. Useful when the extension is
-// not needed.
-fn could_gzip(file_name string) bool {
-	if _ := get_gzippable_file_extension(file_name) {
-		return true
+fn can_gzip(file_name string) bool {
+	for i := 0; i < plausible_gzip.len; i++ {
+		extension := plausible_gzip[i]
+		if file_name.ends_with(extension) {
+			return true
+		}
 	}
 	return false
 }
@@ -26,8 +20,8 @@ fn get_content_type(extension string) string {
 	return veb.mime_types[extension]
 }
 
-fn safely_join_path(public_directory string, provided_path string) !string {
-	file_path := os.join_path(public_directory, provided_path)
+fn safely_join_path(public_directory string, dirs ...string) !string {
+	file_path := os.join_path(public_directory, ...dirs)
 	if !file_path.starts_with(public_directory) {
 		return 'Path resolved to a directory outside of the public directory'
 	}
