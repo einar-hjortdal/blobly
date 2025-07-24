@@ -3,7 +3,6 @@ module main
 import crypto.hmac
 import crypto.rand
 import crypto.sha256
-import encoding.base64
 import encoding.hex
 
 // returns (access_key, secret_key)
@@ -31,7 +30,7 @@ fn validate_header_content(header_content string, keys map[string]string) !strin
 	secret_key := keys[access_key]
 	signature_mirror := new_signature(access_key, secret_key)
 	if hmac.equal(signature, signature_mirror) {
-		return base64.url_decode(split_content[0]).bytestr()
+		return split_content[0]
 	}
 	return error('Signature not valid')
 }
