@@ -1,6 +1,7 @@
 module main
 
 import compress.gzip
+import log
 import net.http
 import os
 import veb
@@ -83,6 +84,7 @@ fn (mut app App) api_files_directory_filename_post(mut ctx Context, directory st
 	}
 
 	mut file := os.create(file_path) or {
+		log.debug('failed os.create call with error: ${err.msg()}')
 		return handle_error(mut ctx, http.Status.internal_server_error, 'Could not create file',
 			err.msg())
 	}

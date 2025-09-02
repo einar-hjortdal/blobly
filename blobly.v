@@ -15,6 +15,7 @@ pub struct App {
 
 fn main() {
 	settings := load_settings()
+	set_log_level()
 
 	create_public_directory(settings.public_directory)
 
