@@ -13,10 +13,9 @@ fn (mut app App) api_directories_get(mut ctx Context) veb.Result {
 			err.msg())
 	}
 
-	r := Entries{
+	return ctx.json(Entries{
 		entries: entries
-	}
-	return ctx.json(r)
+	})
 }
 
 @['/api/files/:directory'; get]
@@ -30,10 +29,9 @@ fn (mut app App) api_files_directory_get(mut ctx Context, directory string) veb.
 			err.msg())
 	}
 
-	r := Entries{
+	return ctx.json(Entries{
 		entries: entries
-	}
-	return ctx.json(r)
+	})
 }
 
 @['/api/files/:directory'; post]
@@ -47,10 +45,9 @@ fn (mut app App) api_files_directory_post(mut ctx Context, directory string) veb
 			err.msg())
 	}
 
-	r := BloblySuccess{
+	return ctx.json(BloblySuccess{
 		success: true
-	}
-	return ctx.json(r)
+	})
 }
 
 @['/api/files/:directory'; delete]
@@ -69,10 +66,9 @@ fn (mut app App) api_files_directory_delete(mut ctx Context, directory string) v
 			'Refusing to delete non-empty directory')
 	}
 
-	r := BloblySuccess{
+	return ctx.json(BloblySuccess{
 		success: true
-	}
-	return ctx.json(r)
+	})
 }
 
 @['/api/files/:directory/:file_name'; post]
@@ -99,11 +95,10 @@ fn (mut app App) api_files_directory_filename_post(mut ctx Context, directory st
 
 	// early exit if no gzipping to be done
 	if !(p.gzip.v && can_gzip(file_name)) {
-		r := BloblySuccess{
+		return ctx.json(BloblySuccess{
 			success:   true
 			file_name: file_name
-		}
-		return ctx.json(r)
+		})
 	}
 
 	gzip_file_path := '${file_path}${gzip_extension}'
@@ -128,12 +123,11 @@ fn (mut app App) api_files_directory_filename_post(mut ctx Context, directory st
 	}
 	gzip_file.close()
 
-	r := BloblySuccess{
+	return ctx.json(BloblySuccess{
 		success:              true
 		file_name:            file_name
 		file_name_compressed: '${file_name}${gzip_extension}'
-	}
-	return ctx.json(r)
+	})
 }
 
 @['/api/files/:directory/:file_name'; delete]
@@ -155,8 +149,7 @@ fn (mut app App) api_files_directory_filename_delete(mut ctx Context, directory 
 		}
 	}
 
-	r := BloblySuccess{
+	return ctx.json(BloblySuccess{
 		success: true
-	}
-	return ctx.json(r)
+	})
 }
