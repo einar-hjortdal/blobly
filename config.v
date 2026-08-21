@@ -5,7 +5,7 @@ import os
 import einar_hjortdal.dotenv
 
 const lib = 'blobly'
-const env_prefix = lib.to_upper() + '_'
+const env_prefix = lib.to_upper() + '_' // TODO remove prefix
 
 const env_public_directory = 'PUBLIC_DIRECTORY'
 const env_port = 'PORT'

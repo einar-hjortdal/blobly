@@ -19,6 +19,6 @@ Build and run the application. Environment variables for configuration, see [.en
 
 Requests to `/api/` routes require a `Blobly-Authorization` header containing the *access key* signed 
 with its related *secret key*, using a `$` separator like this: `<access_key>$<signature>`. The signature 
-is done with hmac, using the sha256 hash function with a block size of 64.
+is done with hmac, using the sha256 hash function with a block size of 64, hex encoded.
 
 I recommend intercepting `/public/` with FreeNGINX for potentially better performance.
