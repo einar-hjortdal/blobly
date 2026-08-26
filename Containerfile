@@ -3,7 +3,7 @@ FROM openmamba/openmamba:latest
 COPY . /srv
 
 RUN dnf update --nogpgcheck --refresh --assumeyes && \
-	dnf install --nogpgcheck --assumeyes git make gcc glibc-devel libatomic-devel && \
+	dnf install --nogpgcheck --assumeyes git make gcc glibc-devel libatomic-devel libopenssl-devel && \
 	git clone --depth=1 https://github.com/vlang/v /opt/v && \
 	cd /opt/v && \
 	make && \
@@ -12,7 +12,7 @@ RUN dnf update --nogpgcheck --refresh --assumeyes && \
 	/opt/v/v . -o blobly && \
 	rm -rf /opt/v && \
 	rm -rf /root/.vmodules && \
-	dnf remove --assumeyes git make gcc glibc-devel libatomic-devel && \
+	dnf remove --assumeyes git make gcc glibc-devel libatomic-devel libopenssl-devel && \
 	dnf clean all
 
 WORKDIR /srv
