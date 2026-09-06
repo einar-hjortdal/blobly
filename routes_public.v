@@ -4,6 +4,11 @@ import net.http
 import os
 import veb
 
+@['/health'; get]
+fn (app &App) health_check(mut ctx Context) veb.Result {
+	return ctx.ok('') // TODO actual info
+}
+
 @['/public/:directory/:file_name'; get]
 fn (mut app App) serve_public(mut ctx Context, directory string, file_name string) veb.Result {
 	file_path := safely_join_path(directory, file_name) or {

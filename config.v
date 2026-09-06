@@ -6,7 +6,7 @@ import einar_hjortdal.dotenv
 
 const lib = 'blobly'
 const env_prefix = lib.to_upper() + '_' // TODO remove prefix
-const data_dir = 'data'
+const data_dir = '/var/lib/blobly/data'
 
 const env_port = 'PORT'
 const env_debug = 'DEBUG'
@@ -44,7 +44,7 @@ fn add_default_settings() {
 	}
 }
 
-fn verify_settings() {
+fn verify_settings() ! {
 	for i := 0; i < env_required.len; i++ {
 		env_var := env_required[i]
 
@@ -57,24 +57,22 @@ fn verify_settings() {
 					Access key: ${access_key}
 					exiting...')
 			}
-			panic('Missing environment variable ${env_var}')
+			return error('Missing environment variable ${env_var}')
 		}
 	}
 }
 
-fn create_data_dir() {
+fn verify_data_dir() ! {
 	if os.is_file(data_dir) {
-		panic('Cannot create data directory: ${data_dir} is a file')
+		return error('${data_dir} is a file')
 	}
 
 	if os.is_dir(data_dir) {
-		log.info('Files are served from the directory ${data_dir}')
+		log.info('Files are served from ${data_dir}')
 		return
 	}
 
-	log.info('Creating directory ${data_dir}')
-	os.mkdir(data_dir) or { panic(err) }
-	log.info('Directory ${data_dir} created successfully')
+	return error('Directory ${data_dir} does not exist, it needs to be created (with the appropriate ownership and permissions)')
 }
 
 fn set_log_level() {
@@ -105,11 +103,11 @@ struct Settings {
 	port int
 }
 
-fn load_settings() Settings {
+fn load_settings() !Settings {
 	dotenv.load()
 	remove_prefix()
 	add_default_settings()
-	verify_settings()
+	verify_settings()!
 
 	return Settings{
 		keys: get_keys()

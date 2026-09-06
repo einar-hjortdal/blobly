@@ -22,7 +22,7 @@ struct ZeroString {
 fn zero_string(m map[string]string, k string) ZeroString {
 	if k in m {
 		return ZeroString{
-			v:      m[k]
+			v: m[k]
 			is_set: true
 		}
 	}
@@ -39,13 +39,13 @@ fn zero_bool(m map[string]string, k string) ZeroBool {
 	if s.is_set {
 		if s.v == '' { // ?gzip
 			return ZeroBool{
-				v:      true
+				v: true
 				is_set: true
 			}
 		}
 
 		return ZeroBool{ // ?gzip=true
-			v:      parse_bool(s.v)
+			v: parse_bool(s.v)
 			is_set: true
 		}
 	}

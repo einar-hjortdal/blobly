@@ -15,10 +15,10 @@ Central file server
 
 ## Usage
 
-Build and run the application. Environment variables for configuration, see [.env.template](.env.template)
+This application is built to run on Linux. The `/var/blobly/data` directory must be manually created before running blobly. The user running the application must have appropriate permissions to read and write in this directory.
 
-Requests to `/api/` routes require a `Blobly-Authorization` header containing the *access key* signed 
-with its related *secret key*, using a `$` separator like this: `<access_key>$<signature>`. The signature 
-is done with hmac, using the sha256 hash function with a block size of 64, hex encoded.
+Environment variables for configuration, see [.env.template](.env.template)
 
-I recommend intercepting `/public/` with FreeNGINX for potentially better performance.
+Requests to `/api/` routes require a `Blobly-Authorization` header containing the *access key* signed with its related *secret key*, using a `$` separator like this: `<access_key>$<signature>`. The signature is done with hmac, using the sha256 hash function with a block size of 64, hex encoded.
+
+Use FreeNGINX as reverse proxy to terminate SSL.

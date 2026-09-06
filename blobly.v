@@ -13,10 +13,10 @@ pub struct App {
 }
 
 fn main() {
-	settings := load_settings()
-	set_log_level()
+	settings := load_settings() or { panic(err) }
 
-	create_data_dir()
+	set_log_level()
+	verify_data_dir() or { panic(err) }
 
 	mut app := App{
 		keys: settings.keys
@@ -24,6 +24,5 @@ fn main() {
 
 	app.use(handler: app.middleware_debug)
 	app.route_use('/api/:path...', handler: app.middleware_auth)
-
 	veb.run[App, Context](mut app, settings.port)
 }

@@ -3,7 +3,15 @@ module main
 import veb
 import os
 
-const plausible_gzip = ['.html', '.css', '.js', '.json', '.xml', '.md', '.txt']
+const plausible_gzip = [
+	'.html',
+	'.css',
+	'.js',
+	'.json',
+	'.xml',
+	'.md',
+	'.txt',
+]
 const gzip_extension = '.gz'
 
 fn can_gzip(file_name string) bool {
@@ -23,7 +31,7 @@ fn get_content_type(extension string) string {
 fn safely_join_path(dirs ...string) !string {
 	path := os.join_path(data_dir, ...dirs)
 	if !path.starts_with(data_dir) {
-		return 'Path resolved to a directory outside of the public directory'
+		return 'Path resolved to a directory outside of the data directory'
 	}
 	return path
 }
