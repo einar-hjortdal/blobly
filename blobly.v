@@ -9,19 +9,17 @@ struct Context {
 @[heap]
 pub struct App {
 	veb.Middleware[Context]
-	keys             map[string]string
-	public_directory string
+	keys map[string]string
 }
 
 fn main() {
 	settings := load_settings()
 	set_log_level()
 
-	create_public_directory(settings.public_directory)
+	create_data_dir()
 
 	mut app := App{
-		public_directory: settings.public_directory
-		keys:             settings.keys
+		keys: settings.keys
 	}
 
 	app.use(handler: app.middleware_debug)

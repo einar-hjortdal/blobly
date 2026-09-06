@@ -18,14 +18,8 @@ fn new_signature(access_key string, secret_key string) []u8 {
 	return hmac.new(secret_key.bytes(), access_key.bytes(), sha256.sum, sha256.block_size)
 }
 
-fn new_header_content(access_key string, secret_key string) string {
-	signature := new_signature(access_key, secret_key)
-	encoded := hex.encode(signature)
-	return '${access_key}$${encoded}'
-}
-
 fn validate_header_content(header_content string, keys map[string]string) !string {
-	split_content := header_content.split('$')
+	split_content := header_content.split('\$')
 	access_key := split_content[0]
 	signature := split_content[1]
 	decoded := hex.decode(signature)!

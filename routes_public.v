@@ -6,9 +6,8 @@ import veb
 
 @['/public/:directory/:file_name'; get]
 fn (mut app App) serve_public(mut ctx Context, directory string, file_name string) veb.Result {
-	file_path := safely_join_path(app.public_directory, directory, file_name) or {
-		return handle_error(mut ctx, http.Status.internal_server_error, 'Bad path name',
-			err.msg())
+	file_path := safely_join_path(directory, file_name) or {
+		return handle_error(mut ctx, http.Status.internal_server_error, 'Bad path name', err.msg())
 	}
 
 	accepted_encoding := ctx.get_header(http.CommonHeader.accept_encoding) or {

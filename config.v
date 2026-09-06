@@ -6,8 +6,8 @@ import einar_hjortdal.dotenv
 
 const lib = 'blobly'
 const env_prefix = lib.to_upper() + '_' // TODO remove prefix
+const data_dir = 'data'
 
-const env_public_directory = 'PUBLIC_DIRECTORY'
 const env_port = 'PORT'
 const env_debug = 'DEBUG'
 const env_keys = 'KEYS'
@@ -15,13 +15,11 @@ const env_keys = 'KEYS'
 const env_required = [env_keys, env_debug]
 
 const env_defaults = {
-	env_debug:            'false'
-	env_port:             '8080'
-	env_public_directory: 'public'
+	env_debug: 'false'
+	env_port:  '8080'
 }
 
 const env_expected = [
-	env_public_directory,
 	env_port,
 	env_debug,
 	env_keys,
@@ -64,19 +62,19 @@ fn verify_settings() {
 	}
 }
 
-fn create_public_directory(dir_path string) {
-	if os.is_file(dir_path) {
-		panic('Cannot create public directory: ${dir_path} is a file')
+fn create_data_dir() {
+	if os.is_file(data_dir) {
+		panic('Cannot create data directory: ${data_dir} is a file')
 	}
 
-	if os.is_dir(dir_path) {
-		log.info('Files are served from the directory ${dir_path}')
+	if os.is_dir(data_dir) {
+		log.info('Files are served from the directory ${data_dir}')
 		return
 	}
 
-	log.info('Creating directory ${dir_path}')
-	os.mkdir(dir_path) or { panic(err) }
-	log.info('Public directory ${dir_path} created successfully')
+	log.info('Creating directory ${data_dir}')
+	os.mkdir(data_dir) or { panic(err) }
+	log.info('Directory ${data_dir} created successfully')
 }
 
 fn set_log_level() {
@@ -103,9 +101,8 @@ fn get_keys() map[string]string {
 }
 
 struct Settings {
-	keys             map[string]string
-	port             int
-	public_directory string
+	keys map[string]string
+	port int
 }
 
 fn load_settings() Settings {
@@ -115,8 +112,7 @@ fn load_settings() Settings {
 	verify_settings()
 
 	return Settings{
-		keys:             get_keys()
-		port:             os.getenv(env_port).int()
-		public_directory: os.abs_path(os.getenv(env_public_directory))
+		keys: get_keys()
+		port: os.getenv(env_port).int()
 	}
 }

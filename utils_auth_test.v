@@ -1,5 +1,11 @@
 module main
 
+fn new_header_content(access_key string, secret_key string) string {
+	signature := new_signature(access_key, secret_key)
+	encoded := hex.encode(signature)
+	return '${access_key}\$${encoded}'
+}
+
 fn test_validate_header_content() ! {
 	access_key, secret_key := generate_key_pair()
 	keys := {

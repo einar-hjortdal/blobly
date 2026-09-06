@@ -20,10 +20,10 @@ fn get_content_type(extension string) string {
 	return veb.mime_types[extension]
 }
 
-fn safely_join_path(public_directory string, dirs ...string) !string {
-	file_path := os.join_path(public_directory, ...dirs)
-	if !file_path.starts_with(public_directory) {
+fn safely_join_path(dirs ...string) !string {
+	path := os.join_path(data_dir, ...dirs)
+	if !path.starts_with(data_dir) {
 		return 'Path resolved to a directory outside of the public directory'
 	}
-	return file_path
+	return path
 }
