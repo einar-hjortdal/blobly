@@ -22,6 +22,8 @@ RUN dnf update --nogpgcheck --refresh --assumeyes && \
 	chown -R blobly:blobly /var/lib/blobly/data && \
 	chmod 750 /var/lib/blobly/data
 
-CMD ["/opt/blobly"]
-
 EXPOSE 8080
+
+USER blobly
+
+CMD ["/opt/blobly"]

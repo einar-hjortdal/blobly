@@ -19,7 +19,7 @@ fn (mut app App) api_directories_get(mut ctx Context) veb.Result {
 
 @['/api/files/:directory'; get]
 fn (mut app App) api_files_directory_get(mut ctx Context, directory string) veb.Result {
-	directory_path := safely_join_path(data_dir, directory) or {
+	directory_path := safely_join_path( directory) or {
 		return handle_error(mut ctx, http.Status.bad_request, 'Bad path', err.msg())
 	}
 
