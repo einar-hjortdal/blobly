@@ -4,8 +4,6 @@ import log
 import os
 import einar_hjortdal.dotenv
 
-const lib = 'blobly'
-const env_prefix = lib.to_upper() + '_' // TODO remove prefix
 const data_dir = '/var/lib/blobly/data'
 
 const env_port = 'PORT'
@@ -28,12 +26,12 @@ const env_expected = [
 fn remove_prefix() {
 	for i := 0; i < env_expected.len; i++ {
 		env_var := env_expected[i]
-		val := os.getenv(env_prefix + env_var)
+		val := os.getenv(env_var)
 		if val == '' {
 			continue
 		}
 
-		os.unsetenv(env_prefix + env_var)
+		os.unsetenv(env_var)
 		os.setenv(env_var, val, false)
 	}
 }
