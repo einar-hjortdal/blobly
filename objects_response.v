@@ -16,7 +16,7 @@ fn new_blobly_error(message string, details string) BloblyError {
 	}
 }
 
-fn handle_error(mut ctx Context, status http.Status, message string, details string) veb.Result {
+fn (mut ctx Context) handle_error(status http.Status, message string, details string) veb.Result {
 	ctx.res.set_status(status)
 	return ctx.json(new_blobly_error(message, details))
 }

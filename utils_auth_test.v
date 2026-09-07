@@ -1,5 +1,7 @@
 module main
 
+import encoding.hex
+
 fn new_header_content(access_key string, secret_key string) string {
 	signature := new_signature(access_key, secret_key)
 	encoded := hex.encode(signature)

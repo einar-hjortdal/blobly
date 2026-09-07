@@ -1,14 +1,14 @@
 module main
 
 import crypto.hmac
-import crypto.rand
 import crypto.sha256
 import encoding.hex
+import rand
 
 // returns (access_key, secret_key)
 fn generate_key_pair() (string, string) {
-	access_key_bytes := rand.bytes(64) or { panic(err) }
-	secret_key_bytes := rand.bytes(64) or { panic(err) }
+	access_key_bytes := rand.bytes(32) or { panic(err) }
+	secret_key_bytes := rand.bytes(32) or { panic(err) }
 	access_key := hex.encode(access_key_bytes)
 	secret_key := hex.encode(secret_key_bytes)
 	return access_key, secret_key
