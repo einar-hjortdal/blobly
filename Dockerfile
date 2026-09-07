@@ -2,9 +2,8 @@ FROM openmamba/openmamba:latest
 
 COPY . /tmp/blobly
 
-RUN dnf update --nogpgcheck --refresh --assumeyes && \
-	dnf install --nogpgcheck --assumeyes git make gcc glibc-devel libatomic-devel libopenssl-devel && \
-	git clone --depth=1 https://github.com/vlang/v -o /tmp/v && \
+RUN dnf install --nogpgcheck --assumeyes git make gcc glibc-devel libatomic-devel libopenssl-devel && \
+	git clone --depth=1 https://github.com/vlang/v /tmp/v && \
 	cd /tmp/v && \
 	make && \
 	cd /tmp/blobly && \
